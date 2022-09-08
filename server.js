@@ -1,18 +1,25 @@
+//Package import-->this http package means u need a server of 
+// http type and then we r storing this package in a variable 
+// for further use 
 const http = require('http');
 
 // This server will communicate at port 8081
-const port = 8081;
+const port = 8081;//Local port number
 
-http.createServer((request, response) => {
-    // Whenever we send user a data with it we send a code which means something 
-    // Like in below line 200 means successful
-    response.writeHead(200, { "Content-Type": "text/html" });
-    response.write("<h1> Hello, this is from my server </h1>");
-    response.end();
+http
+    .createServer((request, response) => {//Call back function
+        // Whenever we send user a data with it we send a code which means something 
+        // Like in below line 200 means successful
+        response.writeHead(200, { "Content-Type": "text/html" });
+        response.write("<h1> Hello, this is from my server </h1>");
+        response.end();
 
-}).listen(port, () => {
-    console.log(`nodejs server started on port ${port}`)
-})
+    })
+    .listen(port, () => {//callback function 
+        //made for third parties to access the server on local 
+        // host using port 
+        console.log(`nodejs server started on port ${port}`)
+    })
 
 /*
 Below Line means that when you make the above server you can communicate with it
