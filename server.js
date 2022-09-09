@@ -6,14 +6,38 @@ const http = require('http');
 // This server will communicate at port 8081
 const port = 8081;//Local port number
 
+// It is list we want to print 
+const toDOList = ["Complete Node Byte", "Play Cricket"];
 http
-    .createServer((request, response) => {//Call back function
-        // Whenever we send user a data with it we send a code which means something 
-        // Like in below line 200 means successful
-        response.writeHead(200, { "Content-Type": "text/html" });
-        response.write("<h1> Hello, this is from my server </h1>");
-        response.end();
+    .createServer((req, res) => {
+        const { method, url } = req;
+        if (url === "/todos") {
+            if (method === "GET") {
+                res.writeHead(200);
+                res.write(toDOList.toString());
 
+            }
+            else if (method === "POST") {
+                let body = "";
+                req.on('error', (err) => {
+                    console.error(err);
+                }).on('data', (chunk) => {//Data travels in form of chunk(pieces of JSON file) not in JSON file so that bugs can be easily fixed also it is also better in terms of speed.
+                    // SO now when we recieve pieces of chunk from browser to mein server we have to assemble them again in so we r storing in body variable below is code for that
+                    body += chunk;
+                    console.log(chunk);
+                }).on('end', () => { //After the process is end we copy the body data into JSON File
+                    body = JSON.parse(body);
+                    console.log("Data : ", body);
+                })
+            }
+            else {
+                res.writeHead(501);
+            }
+        }
+        else {
+            res.writeHead(404);
+        }
+        res.end();
     })
     .listen(port, () => {//callback function 
         //made for third parties to access the server on local 
